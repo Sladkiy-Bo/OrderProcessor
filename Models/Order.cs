@@ -6,6 +6,7 @@ namespace OrderProcessor.Models
     {
         public uint ID {set; get;}
         public decimal Amount{set; get;}
-        public bool Status{set; get;} = true;
+        public string Status{set; get;}
+        public string ProcessedAt{set; get;}
     }
 }
