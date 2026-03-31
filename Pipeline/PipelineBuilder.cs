@@ -1,9 +1,11 @@
 using System;
-using OrderProcessor.Pipeline.Steps;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using OrderProcessor.Pipeline;
 
 namespace Pipeline
 {
-    class PipelineBuilder
+    public class PipelineBuilder
     {
         private readonly List<IPiplineStep<T>> steps = new();
 
@@ -14,13 +16,16 @@ namespace Pipeline
 
         public async Task<Order> BuildAsync(Order input)
         {
-            next = x => Task.FromResult(x);
-            for(int i = steps.Count - 1; i >= 0; i--)
-            {
-                currentStep = steps[i];
-                previousNext = next;
+            if(steps.Count == 0)
+                return input => Task.FromResult(input);
 
-                next = async x => await currentStep.ExecuteAsync(x, previousNext);
+            Func<T, Task<T>> pipeline = steps[^1].ExecuteAsync(input, null);
+            for(int i = steps.Count - 2; i >= 0; i--)
+            {
+                var currentStep = steps[i];
+                var nextStep = pipeline;
+
+                pipeline = async x => await currentStep.ExecuteAsync(x, nextStep);
             }
             return await next(input);
         }

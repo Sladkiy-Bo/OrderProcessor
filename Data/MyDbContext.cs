@@ -1,19 +1,21 @@
+using Microsoft.EntityFrameworkCore; 
 using System.Reflection.Metadata;
+using OrderProcessor.Models;
 
 namespace OrderProcessor.Data
 {
     public class MyDbContext: DbContext
     {
-       public MyDbContext(OnModelOptions<MyDbContext> options):
+       public MyDbContext(DbContextOptions<MyDbContext> options):
            base(options){}
-       public DbSet<Order> orders {set; get;}
+       public DbSet<Order> Orders {set; get;}
 
-       protected override OnModelCreating(ModelBuilder modelBuilder)
+       protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity(entity =>
             {
-                entity.HasIndex(o => o.ID).IsUnique;
-                entity.Property(o => o.Amount).HasColunmType("decimal(18,2)");
+                entity.HasIndex(o => o.ID).IsUnique();
+                entity.Property(o => o.Amount).HasColumnType("decimal(18,2)");
                 entity.Property(o => o.Status).HasDefaultValue("Created");
                 entity.HasIndex(o => o.Status);
             });

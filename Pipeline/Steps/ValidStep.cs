@@ -1,14 +1,18 @@
+using System;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using OrderProcessor.Data;
+using OrderProcessor.Models;
+using OrderProcessor.Pipeline;
 
 namespace OrderProcessor.Pipeline.Steps
 {
-    public class ValidStep: IPiplineStep<Order>
+    public class ValidStep: IPipelineStep<Order>
     {
-        private readonly MyDbContext _context;
         private readonly ILogger<ValidStep> _logger;
-        public ValidStep(MyDbContext context, ILogger<ValidStep> logger)
+        public ValidStep(ILogger<ValidStep> logger)
         {
-            _context = context;
             _logger = logger;
         }
         public async Task<Order> ExecuteAsync(Order input, Func<Order, Task<Order>>? next)
@@ -17,8 +21,8 @@ namespace OrderProcessor.Pipeline.Steps
             _logger.LogInformation("Валидация заказа {ID}...", input.ID);
             if(input.Amount <= 0)
             {
-                input.Status = false;
-                _logger.Logwarning("Заказ номер {ID} не прошёл валидацию", input.ID);
+                input.Status = "Failed";
+                _logger.LogWarning("Заказ номер {ID} не прошёл валидацию", input.ID);
                 return input;
             }
             input.Status = "Validated";
