@@ -4,9 +4,10 @@ namespace OrderProcessor.Models
 {
     public class Order
     {
-        public int ID {set; get;}
-        public decimal Amount{set; get;}
-        public string Status{set; get;}
-        public DateTime? ProcessedAt{set; get;}
+        public int Id {get; set;}
+        public string OrderNumber { get; set; } = string.Empty;
+        public decimal Amount{get; set;}
+        public string Status{get; set;}
+        public DateTime? ProcessedAt{get; set;}
     }
 }

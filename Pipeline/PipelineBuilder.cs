@@ -2,32 +2,34 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using OrderProcessor.Pipeline;
+using OrderProcessor.Models;
 
-namespace Pipeline
+namespace OrderProcessor.Pipeline
 {
-    public class PipelineBuilder
+    public class PipelineBuilder<T>
     {
-        private readonly List<IPiplineStep<T>> steps = new();
+        private readonly List<IPipelineStep<T>> steps = new();
 
-        public void addStep(IPiplineStep<T> step)
+        public PipelineBuilder<T> AddStep(IPipelineStep<T> step)
         {
             steps.Add(step);
+            return this;
         }
 
-        public async Task<Order> BuildAsync(Order input)
+        public Func<T, Task<T>> Build()
         {
             if(steps.Count == 0)
                 return input => Task.FromResult(input);
 
-            Func<T, Task<T>> pipeline = steps[^1].ExecuteAsync(input, null);
+            Func<T, Task<T>> pipeline = input => steps[^1].ExecuteAsync(input, null);
             for(int i = steps.Count - 2; i >= 0; i--)
             {
                 var currentStep = steps[i];
                 var nextStep = pipeline;
 
-                pipeline = async x => await currentStep.ExecuteAsync(x, nextStep);
+                pipeline = input => currentStep.ExecuteAsync(input, nextStep);
             }
-            return await next(input);
+            return pipeline;
         }
     }
 }

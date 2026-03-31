@@ -1,0 +1,6 @@
+C:\Users\Vladislav\.vscode\OrderProcessor\obj\Debug\net9.0\OrderProcessor.csproj.AssemblyReference.cache
+C:\Users\Vladislav\.vscode\OrderProcessor\obj\Debug\net9.0\OrderProcessor.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Vladislav\.vscode\OrderProcessor\obj\Debug\net9.0\OrderProcessor.AssemblyInfoInputs.cache
+C:\Users\Vladislav\.vscode\OrderProcessor\obj\Debug\net9.0\OrderProcessor.AssemblyInfo.cs
+C:\Users\Vladislav\.vscode\OrderProcessor\obj\Debug\net9.0\OrderProcessor.csproj.CoreCompileInputs.cache
+C:\Users\Vladislav\.vscode\OrderProcessor\obj\Debug\net9.0\OrderProcessor.sourcelink.json
